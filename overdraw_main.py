@@ -3,11 +3,30 @@
 OverDraw by Alan.R.G.Systemas now tested on Xubuntu 20.04.6 LTS with enable display compositing (Nov-2023)
 
 Documentación y Control de Versionado
+v.0.8.7 (09/11/2023) Día siete, versión del septimo día, se aplica un estilo sombreado a los botones
+redondeados mediante dos metodos especiales llamados CustomButton() y CustomDialogButton() en
+button_handler.py, esto genera un aspecto mas futurista a toda la aplicación, no agrega nada funcional
+pero la deja más agradable y bonita a los ojos del usuario final que nada le importa el tiempo de
+encoding que uno usa para que sus ojos disfruten.
+# Se implementa metodo CustomButton() en button_handler.py.
+# Se implementa metodo CustomDialogButton() en button_handler.py.
+# Se aplica un estilo global a la barra de estado QStatusBar en el overdraw_main.py.
+# Se agrega el logo de la app en el circulo de muestra del trazo.
+# Se agrega boton para cerrar la app en la barra de herramientas.
+
+v.0.8.6 (09/11/2023) Día seis, la cuenta de los días se torna abrumadora, ciertamente innecesaria, dudo
+de su útilidad, pero no quiero dudar, bitcoin cotiza en maximos y debería estar tradeando pero me puse
+a definir estilos en los botones de la app, cosa que no suma nada mas que estetica a la aplicación.
+# Se agrega estilo global a los botones, redondeados futuristas, minimalistas.
+# Se corrige la logica para mostrar u ocultar los botones de control valga la redundancia.
+# Se agregan dos botones a la barra de utilidades toolbar_handler (overlay control y botones control).
+# Se agrega memoria de estado de los botones que se muestran u ocultan desde la toolbar con botones control.
+
 v.0.8.5 (05/11/2023 Día cinco, pensaba agregar una figura de fibonacci, pero me di cuenta que habia
 un error en la determinacion del lienzo del dibujo en el mainwindow, lo que ocacionó una serie de
 pruebas y errores que me hicieron perder mucho tiempo, tengo un bug en la zona suerior izquierda,
 no sé que es, la IA tampoco, y ya estoy cansado. lo dejo por hoy.
-# se soluciona problema de doble lienzo en la ventana principal.
+# Se soluciona problema de doble lienzo en la ventana principal.
 
 v.0.8.4 (31/10/2023) Día cuatro, hoy me dí cuenta que Bard es mucho mas inteligente como inteligencia
 artificial que la estupidez artificial de ChatGPT 3.5, no sólo recordó lo que hablamos anoche, sino
@@ -62,10 +81,21 @@ Color de fondo (y su memoría)
 '''
 import sys
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QColor
 from main_window import MainWindow
 
 if __name__ == '__main__':
+    #QApplication.setStyle("Fusion")
     app = QApplication(sys.argv)
+    #estilo global para la barra de estado
+    app.setStyleSheet("""
+                      QStatusBar {
+                      font-style: normal;
+                      color: white;
+                      background: solid;
+                      background-color: black;
+                      }
+    """)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
-from PyQt5.QtGui import QPen, QColor
+from PyQt5.QtGui import QPen, QColor, QPainter
 from PyQt5.QtCore import Qt
 
 class DrawingOverlay(QGraphicsView):
@@ -22,10 +22,11 @@ class DrawingOverlay(QGraphicsView):
         #self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
         #self.setOptimizationFlag(QGraphicsView.DontAdjustForAntialiasing, True)
         #self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+        #self.setStyleSheet("QGraphicsView {border: 2px solid gray; border-radius: 10px;}")
 
         self.setScene(QGraphicsScene(self))
         self.setSceneRect(0, 0, self.ancho, self.alto)
-        
+                
         # Configurar el fondo transparente
         self.setStyleSheet("background: transparent;")
         self.setAttribute(Qt.WA_AlwaysStackOnTop)

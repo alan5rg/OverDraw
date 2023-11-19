@@ -27,10 +27,12 @@ class WidthDialog(QDialog):
 
         self.width_label = QLabel('Grosor actual: {}'.format(self.current_width))
 
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        #button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box = self.main_window.button_handler.CustomDialogButton(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
-
+        button_box.setMinimumSize(100,20)
+        
         self.indic_label = QLabel('Selecciona el grosor de la línea:')
         layout.addWidget(self.indic_label)
         layout.addWidget(self.width_slider)
@@ -63,10 +65,12 @@ class ShapeDialog(QDialog):
             self.shape_combo.addItem(shape)
         self.shape_combo.setCurrentText(shapes[self.current_shape])
 
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        #button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box = self.main_window.button_handler.CustomDialogButton(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
-
+        button_box.setMinimumSize(100,20)
+        
         layout.addWidget(QLabel('Selecciona un shape para el trazo:'))
         layout.addWidget(self.shape_combo)
         layout.addWidget(button_box)
@@ -88,7 +92,7 @@ class ToolbarHandler(QMainWindow):
 
         #toolbar personalizada
         self.tb = QToolBar("toolbar")
-        self.tb = self.main_window.addToolBar("&Trazo") #, Qt.TopToolBarArea)
+        self.tb = self.main_window.addToolBar("La Mejor &Toolbar del fukin mundo") #, Qt.TopToolBarArea)
         self.main_window.addToolBar(Qt.BottomToolBarArea, self.tb)
         #self.tb.setOrientation(QtCore.Qt.Vertical)
         #self.tb.setFixedWidth(500)
@@ -99,19 +103,19 @@ class ToolbarHandler(QMainWindow):
         self.tb.setIconSize(QSize(50, 50))
 
         #Selección de Color
-        color = QAction(QIcon(self.IconPath + os.path.sep + 'paleta.png'), "&Color",self)
+        color = QAction(QIcon(self.IconPath + os.path.sep + 'paleta.png'), "Ventana de selección de &Color",self)
         color.setStatusTip('Ventana de selección de color')
         color.triggered.connect(self.main_window.button_handler.color_dialog)
         self.tb.addAction(color)
 
         #Selección de Grosor
-        grosor = QAction(QIcon(self.IconPath + os.path.sep + 'grosorb.png'),"&Grosor",self)
+        grosor = QAction(QIcon(self.IconPath + os.path.sep + 'grosorb.png'),"Ventana de selección de &Grosor de Trazo",self)
         grosor.setStatusTip('Ventana de selección de Grosor de Trazo')
         grosor.triggered.connect(self.show_width_dialog)
         self.tb.addAction(grosor)
 
         #Selección de shape
-        shape = QAction(QIcon(self.IconPath + os.path.sep + 'shape.png'),"&Shape",self)
+        shape = QAction(QIcon(self.IconPath + os.path.sep + 'shape.png'),"Ventana de selección de &Shape del Trazo",self)
         shape.setStatusTip('Ventana de selección de Shape del Trazo')
         shape.triggered.connect(self.show_shape_dialog)
         self.tb.addAction(shape)
@@ -122,10 +126,33 @@ class ToolbarHandler(QMainWindow):
         self.tb.addAction(separador)
 
         #Borrar Dibujo
-        borrar = QAction(QIcon(self.IconPath + os.path.sep + 'borrar.png'),"&Borrar",self)
+        borrar = QAction(QIcon(self.IconPath + os.path.sep + 'borrar.png'),"&Borrar Trazos",self)
         borrar.setStatusTip('Borrar Trazos')
         borrar.triggered.connect(self.borrar_trazos)
         self.tb.addAction(borrar)
+
+        #Overlay Mode
+        overlay = QAction(QIcon(self.IconPath + os.path.sep + 'overlay.png'),"Control Modo &Overlay",self)
+        overlay.setStatusTip('Control Modo Overlay')
+        overlay.triggered.connect(self.modo_overlay)
+        self.tb.addAction(overlay)
+
+        #Botones de Control
+        botones = QAction(QIcon(self.IconPath + os.path.sep + 'ctrls.png'),"Mostrar/Ocultar Botones de Control",self)
+        botones.setStatusTip('Mostrar/Ocultar Botones de Control')
+        botones.triggered.connect(self.botones_control)
+        self.tb.addAction(botones)
+
+        # Agrega un separador
+        separador = QAction(QIcon(""), "", self)
+        separador.setSeparator(True)
+        self.tb.addAction(separador)
+
+        #Cerrar OverDraw
+        cerrar = QAction(QIcon(self.IconPath + os.path.sep + 'cerrar.png'),"&Cerrar OverDraw",self)
+        cerrar.setStatusTip('Cerrar OverDraw')
+        cerrar.triggered.connect(self.main_window.close)
+        self.tb.addAction(cerrar)
     
     def custom_toolbar_style(self):
         # Hoja de estilo para la QtoolBar
@@ -163,6 +190,12 @@ class ToolbarHandler(QMainWindow):
         }
         """
         self.main_window.setStyleSheet(toolbar_style)
+
+    def modo_overlay(self):
+        self.main_window.button_handler.overlay_control()
+
+    def botones_control(self):
+        self.main_window.button_handler.mostrar_botones_control()
 
     def borrar_trazos(self):
         self.main_window.button_handler.borrar_dibujo()
